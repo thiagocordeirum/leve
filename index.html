@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Leve</title>
+<meta name="description" content="Seu dinheiro, com mais respiro: quanto ainda dá para gastar na semana.">
+<meta name="theme-color" content="#F8F7F3" id="theme-color">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Leve">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="referrer" content="no-referrer">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon-v3.png">
+<link rel="icon" type="image/png" href="/icons/favicon-32-v3.png">
+<link rel="preload" href="/fonts/inter-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<script src="/tema.js"></script>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-in">
+    <div class="marca" aria-hidden="true"><svg class="simbolo" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M34 22C31 40 26 78 48 78C64 78 72 62 73 46" fill="none" stroke="currentColor" stroke-width="17" stroke-linecap="round"/></svg><span>leve</span></div>
+    <h1>Seu dinheiro,<br>com mais respiro.</h1>
+    <p class="tag" id="g-tag">Uma rotina financeira mais clara. Menos ruído, mais autonomia.</p>
+    <form id="g-email" hidden novalidate>
+      <div class="field"><label for="g-mail">E-mail</label><input id="g-mail" type="email" autocomplete="email" inputmode="email" required placeholder="voce@email.com"></div>
+      <button class="primary" type="submit" id="g-send">Enviar código</button>
+      <p>Você recebe um código de acesso no e-mail. Não tem senha para decorar.</p>
+    </form>
+    <form id="g-code" hidden novalidate>
+      <p id="g-sent">Enviamos um código para o seu e-mail.</p>
+      <div class="field"><label for="g-otp">Código</label><input id="g-otp" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" pattern="[0-9]*" required></div>
+      <button class="primary" type="submit" id="g-verify">Entrar</button>
+      <button class="linkbtn" type="button" id="g-back">Usar outro e-mail</button>
+    </form>
+    <p class="g-msg" id="g-msg" role="status" aria-live="polite"></p>
+  </div>
+</div>
+<div class="puxar" id="puxar" aria-hidden="true"><svg class="simbolo" viewBox="0 0 100 100"><path pathLength="1" d="M34 22C31 40 26 78 48 78C64 78 72 62 73 46" fill="none" stroke="currentColor" stroke-width="17" stroke-linecap="round"/></svg></div>
+<div class="app" id="app">
+  <header class="top">
+    <div class="hello"><small id="hello-s">leve / seu dinheiro</small><h1 id="hello-t">Tudo no seu ritmo.</h1></div>
+    <button class="avatar" id="avatar" data-go="3" aria-label="Ajustes"><span id="avatar-l">L</span></button>
+  </header>
+  <div class="banner" id="banner" hidden></div>
+
+  <!-- INÍCIO -->
+  <section class="screen" id="s-inicio" data-tab="0">
+    <div class="col-a">
+    <div class="hero idle" id="hero">
+      <span class="formas" aria-hidden="true"><i class="f1"></i><i class="f2"></i><i class="f3"></i></span>
+      <div class="h-top"><span id="h-tag">Sua semana</span><span id="h-faixa"></span></div>
+      <div class="lbl" id="h-lbl">Carregando seu plano…</div>
+      <div class="big-w"><div class="big num" id="h-big">R$ 0,00</div><svg class="risco" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 6.5C52 3.6 118 3.1 197 4.6"/><path pathLength="1" d="M28 10.6C78 8.4 132 8.1 181 9.4"/></svg></div>
+      <div class="sub" id="h-sub">&nbsp;</div>
+      <span class="bar h-bar" id="h-bar" hidden><b></b></span>
+      <div class="pace" id="h-pace"></div>
+    </div>
+    <div class="acoes" id="quick">
+      <button class="primary" data-q="lancar">Nova saída</button>
+      <button class="sec ico-only" data-q="foto" aria-label="Ler saída de uma foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+      <button class="sec" data-q="guardar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 13v4M10 15h4"/></svg>Guardar</button>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <button class="card r-cta" id="r-cta" hidden><span class="ico" style="--c:var(--roxo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><span style="min-width:0"><b id="r-cta-t">Resumo do mês</b><small id="r-cta-p"></small></span><span class="deck" aria-hidden="true"><i></i><i></i><i></i></span></button>
+    </div>
+    <div class="col-b">
+    <div class="sec-h"><h2>Últimos movimentos</h2><button class="link" data-go="2">Ver todos</button></div>
+    <div class="card"><div class="list" id="recent"></div></div>
+    <p class="rodape">Um passo de cada vez também é progresso.</p>
+    </div>
+  </section>
+
+  <!-- MÊS -->
+  <section class="screen" id="s-mes" data-tab="1" hidden>
+    <nav class="subnav" aria-label="Extrato"><button data-go="2">Lançamentos</button><button data-go="1">Plano</button><button data-go="5">Resumo</button></nav>
+    <div class="col-a">
+    <div class="mnav">
+      <button id="m-prev" aria-label="Mês anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="mname" id="m-name">—</div>
+      <button id="m-next" aria-label="Próximo mês"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="donut-card">
+      <div class="d-h"><span>Salário do mês</span><b class="num" id="d-sal">R$ 0,00</b></div>
+      <div class="donut"><svg viewBox="0 0 160 160" id="donut"></svg><div class="c"><div><b class="num" id="d-center">—</b><span id="d-center-l">livre no mês</span></div></div></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    </div>
+    <div class="col-b">
+    <div class="sec-h"><h2>Semanas</h2><span class="link muted" id="m-porsem"></span></div>
+    <div class="card"><div class="weeks" id="weeks"></div></div>
+    <div class="sec-h"><h2>Próximos meses</h2><span class="link muted">livre por mês</span></div>
+    <div class="card"><div class="future" id="future"></div></div>
+    <div class="sec-h"><h2>Fixos deste mês</h2></div>
+    <div class="card" id="fixos-mes"></div>
+    </div>
+  </section>
+
+  <!-- GASTOS -->
+  <section class="screen" id="s-gastos" data-tab="2" hidden>
+    <nav class="subnav" aria-label="Extrato"><button data-go="2">Lançamentos</button><button data-go="1">Plano</button><button data-go="5">Resumo</button></nav>
+    <div class="busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg><input id="g-busca" type="search" placeholder="Buscar: uber, ifood, farmácia, 32,90" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="search" aria-label="Buscar saídas"><button id="g-busca-x" type="button" aria-label="Limpar busca" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="col-a">
+    <div class="pnav"><button id="g-prev" aria-label="Período anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><div><b id="g-nome">—</b><small id="g-faixa"></small></div><button id="g-next" aria-label="Próximo período"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    <div class="card g-sum">
+      <div class="g-tot">
+        <div class="g-tot-h"><span>Total de saídas</span><div class="seg two mini" id="g-per"><div class="thumb"></div><button data-p="semana">Semana</button><button data-p="mes" class="on">Mês</button></div></div>
+        <b class="num" id="g-total">R$ 0,00</b><small id="g-lim"></small>
+        <span class="stack" id="g-bar" hidden></span><small id="g-det"></small>
+      </div>
+    </div>
+    <div class="sec-h"><h2>Para onde foi</h2><button class="link" id="g-limpa" hidden>Todas as categorias</button><button class="link" id="g-mes" data-go="1">Plano do mês</button></div>
+    <div class="card"><div class="cats" id="g-cats"></div></div>
+    </div>
+    <div class="col-b">
+    <div class="sec-h"><h2>Lançamentos</h2><button class="round-add" id="g-add" aria-label="Nova saída"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button></div>
+    <div class="chips" id="g-fontes" role="group" aria-label="Forma de pagamento"><button data-gf="" class="on" aria-pressed="true">Todas</button><button data-gf="conta" aria-pressed="false">Conta</button><button data-gf="cartao" aria-pressed="false">Crédito</button><button data-gf="vr" aria-pressed="false">Vale-refeição</button><button data-gf="mob" aria-pressed="false">Mobilidade</button><button data-gf="caixinha" aria-pressed="false">Caixinha</button></div>
+    <p class="g-res" id="g-res" hidden></p>
+    <div class="card"><div class="list" id="all"></div></div>
+    </div>
+  </section>
+
+  <!-- CAIXINHA -->
+  <section class="screen" id="s-caixa" data-tab="4" hidden>
+    <div class="col-a">
+    <div class="cx-card">
+      <div class="cx-top"><span class="cx-l">Pequenos passos, grandes planos.</span><span class="cx-bts"><button class="icon-ghost olho" id="cx-olho" type="button" aria-pressed="false" aria-label="Esconder o saldo"><svg class="olho-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="olho-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.6A9.6 9.6 0 0 1 12 5.5C18 5.5 21.5 12 21.5 12a17 17 0 0 1-3.2 3.9M6.6 6.6C3.9 8.4 2.5 12 2.5 12S6 18.5 12 18.5c1.6 0 3-.4 4.2-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button><button class="icon-ghost" id="cx-cfg" aria-label="Objetivo e rendimento"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg></button></span></div>
+      <div class="big num" id="cx-saldo">R$ 0,00</div>
+      <div class="cx-liq" id="cx-liq-v"></div>
+      <div class="cx-chip" id="cx-rend"></div>
+    </div>
+    <div class="card meta-card" id="cx-ring">
+      <div class="meta-h"><span class="ico" style="--c:var(--roxo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></span><span><b>Objetivo</b><small id="cx-obj"></small></span></div>
+      <div class="meta-v"><b class="num" id="cx-meta-v"></b><small class="num" id="cx-meta-de"></small><span class="num" id="cx-ring-p">0%</span></div>
+      <span class="bar"><b id="cx-ring-v"></b></span>
+    </div>
+    <div class="acoes three" id="cx-acoes">
+      <button class="primary" data-cx="deposito">Guardei</button>
+      <button class="sec" data-cx="resgate">Resgatei</button>
+      <button class="sec" data-cx="ajuste">Atualizar</button>
+    </div>
+    <div class="card stats" id="cx-tiles"></div>
+    </div>
+    <div class="col-b">
+    <div class="sec-h" style="align-items:center"><h2>Evolução</h2><div class="seg two mini" id="cx-gmodo"><div class="thumb"></div><button data-g="total" class="on">Total</button><button data-g="mes">Mês</button></div></div>
+    <div class="card"><div class="chart" id="cx-chart"></div></div>
+    <div class="sec-h"><h2>Movimentos</h2></div>
+    <div class="card"><div class="list" id="cx-list"></div></div>
+    </div>
+  </section>
+
+  <!-- RESUMO -->
+  <section class="screen" id="s-resumo" data-tab="5" hidden>
+    <nav class="subnav" aria-label="Extrato"><button data-go="2">Lançamentos</button><button data-go="1">Plano</button><button data-go="5">Resumo</button></nav>
+    <div class="sec-h r-topo"><div class="seg two mini" id="r-per"><div class="thumb"></div><button data-p="semana">Semana</button><button data-p="mes" class="on">Mês</button></div></div>
+    <div class="pnav"><button id="r-prev" aria-label="Período anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button><div><b id="r-nome">—</b><small id="r-faixa"></small></div><button id="r-next" aria-label="Próximo período"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+    <div class="col-a">
+    <div class="card r-ia">
+      <div class="r-ia-h"><span class="ico" style="--c:var(--roxo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></span><h2>O que importa</h2><button class="link" id="r-ia-btn">Refazer</button></div>
+      <div id="r-ia-list"></div>
+      <div class="r-sug" id="r-sug" hidden></div>
+      <p class="r-nota" id="r-nota"></p>
+    </div>
+    </div>
+    <div class="col-b">
+    <div class="sec-h"><h2 id="r-graf-t">Ritmo do mês</h2></div>
+    <div class="card"><div class="chart r-chart" id="r-ritmo"></div><p class="r-leg" id="r-ritmo-s"></p></div>
+    <div class="sec-h"><h2>Categorias</h2><span class="link muted" id="r-cat-s"></span></div>
+    <div class="card"><div class="r-cats" id="r-cats"></div></div>
+    <div class="sec-h"><h2>Onde mais foi</h2></div>
+    <div class="card"><div class="list" id="r-top"></div></div>
+    </div>
+    <p class="rodape">Conta só o que sai do seu limite: vale-refeição, mobilidade e caixinha ficam de fora. As comparações usam o mesmo ponto dos períodos anteriores.</p>
+  </section>
+
+  <!-- AJUSTES -->
+  <section class="screen" id="s-ajustes" data-tab="3" hidden>
+    <div class="aj-sec" aria-labelledby="aj-plano">
+    <h2 class="aj-t" id="aj-plano">Seu plano</h2>
+      <div class="rows">
+        <button class="row link-row" data-go="6"><span>Salário, metas e contas fixas<small id="plano-resumo">—</small></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="aj-sec" aria-labelledby="aj-con">
+    <h2 class="aj-t" id="aj-con">Conexões</h2>
+      <div class="rows">
+        <button class="row link-row" id="tg-grp" data-painel="#sheet-tg" hidden><span>Telegram<small>Conversa, áudio e avisos</small></span><span class="est off" id="tg-est">Não conectado</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <button class="row link-row" data-painel="#sheet-at"><span>Atalhos do iPhone<small>Nova saída e conferir a caixinha</small></span><span class="est off" id="at-est">Nenhum</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <label class="row link-row" for="csv"><span>Importar fatura ou extrato do Nubank<small>Arquivo CSV da fatura do crédito ou do extrato da conta</small></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg><input id="csv" type="file" accept=".csv,text/csv" hidden></label>
+        <button class="row link-row" id="wa-grp" data-painel="#sheet-wa" hidden><span>WhatsApp<small>Conversa, áudio e avisos</small></span><span class="est off" id="wa-est">Não conectado</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <div class="form-card" id="imp-box" hidden></div>
+    </div>
+
+    <div class="aj-sec" aria-labelledby="aj-apa">
+    <h2 class="aj-t" id="aj-apa">Este aparelho</h2>
+      <div class="rows">
+        <button class="row link-row" id="lk-linha" type="button"><span>Face ID<small>Ao abrir e depois de 1 minuto fora do app</small></span><span class="est off" id="lk-est">Desligado</span></button>
+        <label class="row"><span>Tema</span><select id="c-tema"><option value="">Igual ao iPhone</option><option value="light">Claro</option><option value="dark">Escuro</option></select></label>
+      </div>
+      <p class="grp-f">Valem só para este aparelho.</p>
+    </div>
+
+    <div class="aj-sec" aria-labelledby="aj-dad">
+    <h2 class="aj-t" id="aj-dad">Dados e conta</h2>
+      <div class="rows">
+        <button class="row link-row" data-painel="#sheet-bk"><span>Backup<small>Baixar ou restaurar seus dados</small></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        <div class="row"><span>E-mail</span><b id="acc-email" class="row-v">—</b></div>
+        <button class="row link-row danger-row" id="logout"><span>Sair da conta</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEU PLANO (abre por Ajustes) -->
+  <section class="screen" id="s-plano" data-tab="6" hidden>
+    <div class="sec-h"><button class="back" data-go="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg>Ajustes</button></div>
+    <div class="grp">
+      <div class="grp-h">Salário e metas</div>
+      <div class="rows">
+        <label class="row"><span>Nome</span><input id="c-nome" type="text" autocomplete="given-name" placeholder="Seu nome"></label>
+        <label class="row"><span>Começa em</span><input id="c-inicio" type="month"></label>
+        <label class="row"><span>Semana começa</span><select id="c-semana"><option value="">Na segunda</option><option value="dom">No domingo</option></select></label>
+        <label class="row"><span>Salário cai</span><select id="c-pagto"><option value="ultimo-util">No último dia útil</option><option value="">Semana do 1º sábado</option></select></label>
+        <label class="row"><span>Salário</span><input id="c-sal" class="moeda" type="text" inputmode="decimal" placeholder="R$ 0,00"></label>
+        <label class="row"><span>Guardar por mês</span><input id="c-meta" class="moeda" type="text" inputmode="decimal" placeholder="R$ 0,00"></label>
+        <label class="row"><span>Vale-refeição por mês</span><input id="c-vr" class="moeda" type="text" inputmode="decimal" placeholder="R$ 0,00"></label>
+        <label class="row"><span>Mobilidade por mês</span><input id="c-mob" class="moeda" type="text" inputmode="decimal" placeholder="R$ 0,00"></label>
+      </div>
+      <p class="grp-f">Com o salário no último dia útil, o mês do plano (e o vale-refeição e a mobilidade) começa no dia do pagamento. Os valores são salvos assim que você sai do campo.</p>
+    </div>
+    <div class="grp">
+      <div class="grp-h"><span>Custos fixos e parcelas</span><span id="fx-tot"></span></div>
+      <div class="rows" id="fx-list"></div>
+      <p class="grp-f">O mês de cada custo é o mês em que a fatura é paga.</p>
+    </div>
+    <div class="grp">
+      <div class="grp-h">Faturas com valor exato</div>
+      <div class="rows" id="aj-list"></div>
+      <p class="grp-f">Use quando a fatura de um mês for diferente da soma dos fixos.</p>
+    </div>
+  </section>
+</div>
+
+<nav class="tabbar" aria-label="Navegação">
+  <div class="marca tb-marca so-pc" aria-hidden="true"><svg class="simbolo" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M34 22C31 40 26 78 48 78C64 78 72 62 73 46" fill="none" stroke="currentColor" stroke-width="17" stroke-linecap="round"/></svg><span>leve</span></div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-go="0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/></svg>Início</button>
+    <button class="tab" data-go="2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 20V10M12 20V4M18 20v-7"/></svg>Extrato</button>
+    <button class="tab" data-go="4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 10h14v9a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg>Caixinha</button>
+    <button class="tab so-pc" data-go="3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+  </div>
+  <p class="teclas so-pc" aria-label="Atalhos de teclado"><span><kbd>N</kbd> nova saída</span><span><kbd>/</kbd> buscar</span><span><kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> abas</span><span><kbd>Esc</kbd> fechar</span></p>
+</nav>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Nova saída">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sr" id="l-tit">Nova saída</h3>
+    <div class="ia-links">
+      <button class="foto-link" id="l-foto" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Ler de uma foto</button>
+      <button class="foto-link" id="l-voz" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>Falar</button>
+    </div>
+    <div class="amount num zero" id="amt">R$ 0,00</div>
+    <div class="cat-grid" id="pills"></div>
+    <div class="seg" id="fonte"><div class="thumb" id="thumb"></div><button data-f="conta" class="on">Conta</button><button data-f="cartao">Crédito</button><button data-f="vr">Vale-refeição</button><button data-f="mob">Mobilidade</button></div>
+    <div class="dchips" id="l-dias"><button data-d="0">Hoje</button><button data-d="1">Ontem</button><label class="dpick"><span class="sr">Outro dia</span><input id="l-data" type="date" aria-label="Data do gasto"></label></div>
+    <div class="field l-desc"><label for="l-desc" class="sr">Descrição</label><input id="l-desc" type="text" placeholder="Descrição (opcional)"></div>
+    <div class="keys" id="keys"></div>
+    <button class="primary" id="l-ok" disabled>Lançar</button>
+    <button class="danger-ghost" id="l-del" hidden>Apagar saída</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-cx" role="dialog" aria-modal="true" aria-label="Registrar na caixinha">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t" id="cx-sheet-t">Guardar na caixinha</h3>
+    <div class="seg three" id="cx-tipo"><div class="thumb"></div><button data-t="deposito" class="on">Guardei</button><button data-t="resgate">Resgatei</button><button data-t="ajuste">Conferir saldo</button></div>
+    <p class="sheet-p" id="cx-hint">Quanto você colocou na caixinha.</p>
+    <div class="row2">
+      <div class="field"><label for="cx-valor" id="cx-valor-l">Valor (R$)</label><input id="cx-valor" type="number" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+      <div class="field"><label for="cx-data">Data</label><input id="cx-data" type="date"></div>
+    </div>
+    <div class="field" id="cx-liq-f" hidden><label for="cx-liq">Total líquido (R$)</label><input id="cx-liq" type="number" step="0.01" inputmode="decimal" placeholder="opcional"></div>
+    <div class="field"><label for="cx-nota">Nota</label><input id="cx-nota" type="text" placeholder="opcional"></div>
+    <label class="chk" id="cx-gasto-f" hidden><input type="checkbox" id="cx-gasto"><span>Registrar também como saída<small>Aparece no Extrato, mas não sai do limite da semana</small></span></label>
+    <div class="cat-grid" id="cx-gcat" hidden></div>
+    <button class="primary" id="cx-ok">Registrar</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-cxcfg" role="dialog" aria-modal="true" aria-label="Objetivo e rendimento">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Objetivo e rendimento</h3>
+    <p class="sheet-p">A barra do objetivo enche conforme você chega perto dele. O rendimento entra sozinho a cada dia útil, com o CDI do Banco Central.</p>
+    <div class="row2">
+      <div class="field"><label for="cx-alvo">Objetivo (R$)</label><input id="cx-alvo" type="number" step="0.01" inputmode="decimal" placeholder="ex.: 15000"></div>
+      <div class="field"><label for="cx-pct">Rende (% do CDI)</label><input id="cx-pct" type="number" step="1" inputmode="decimal" placeholder="100"></div>
+    </div>
+    <p class="sheet-p" id="cx-cdi-info"></p>
+    <button class="primary" id="cx-alvo-ok">Salvar</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-fx" role="dialog" aria-modal="true" aria-label="Custo fixo">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t" id="fx-t">Custo fixo</h3>
+    <div class="field"><label for="fx-nome">Nome</label><input id="fx-nome" type="text" placeholder="ex.: Academia"></div>
+    <div class="row2">
+      <div class="field"><label for="fx-valor">Valor por mês (R$)</label><input id="fx-valor" type="number" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+      <div class="field"><label>Onde cobra</label><div class="seg two" id="fx-onde"><div class="thumb"></div><button data-o="cartao" class="on">Crédito</button><button data-o="debito">Débito</button></div></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="fx-ini">A partir de</label><input id="fx-ini" type="month"></div>
+      <div class="field"><label for="fx-fim">Até (opcional)</label><input id="fx-fim" type="month"></div>
+    </div>
+    <div class="field"><label for="fx-chave">Palavra-chave na fatura</label><input id="fx-chave" type="text" placeholder="ex.: wellhub"></div>
+    <p class="sheet-p">A palavra-chave serve para ignorar esse item quando você importar a fatura do crédito.</p>
+    <button class="primary" id="fx-ok">Salvar</button>
+    <button class="danger-ghost" id="fx-del" hidden>Apagar custo fixo</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-aj" role="dialog" aria-modal="true" aria-label="Fatura com valor exato">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Fatura com valor exato</h3>
+    <div class="row2">
+      <div class="field"><label for="aj-mes">Mês da fatura</label><input id="aj-mes" type="month"></div>
+      <div class="field"><label for="aj-valor">Valor (R$)</label><input id="aj-valor" type="number" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+    </div>
+    <p class="sheet-p">Esse valor substitui a soma dos fixos no crédito naquele mês.</p>
+    <button class="primary" id="aj-ok">Salvar</button>
+    <button class="danger-ghost" id="aj-del" hidden>Apagar</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-ini" role="dialog" aria-modal="true" aria-label="Montar seu plano">
+  <div class="sheet-in ini">
+    <div class="grab"></div>
+    <div class="ini-prog" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <span class="ini-n" id="ini-n">Passo 1 de 4</span>
+    <section class="ini-p" data-p="1">
+      <h3 class="ini-t">Como funciona o seu mês?</h3>
+      <p class="sheet-p">Com isso o Leve sabe quando o seu mês começa e como dividir as semanas.</p>
+      <div class="field"><label for="ini-nome">Como quer ser chamado</label><input id="ini-nome" type="text" autocomplete="given-name" placeholder="Seu nome"></div>
+      <div class="field"><label id="ini-pagto-l">O salário cai</label><div class="seg two" id="ini-pagto" role="group" aria-labelledby="ini-pagto-l"><div class="thumb"></div><button type="button" data-v="ultimo-util">No último dia útil</button><button type="button" data-v="">No começo do mês</button></div></div>
+      <div class="field"><label id="ini-semana-l">A semana começa</label><div class="seg two" id="ini-semana" role="group" aria-labelledby="ini-semana-l"><div class="thumb"></div><button type="button" data-v="">Na segunda</button><button type="button" data-v="dom">No domingo</button></div></div>
+    </section>
+    <section class="ini-p" data-p="2" hidden>
+      <h3 class="ini-t">Quanto entra e quanto guardar?</h3>
+      <p class="sheet-p">O que você guarda sai primeiro, no dia do salário. O resto, menos as contas fixas, vira o seu limite da semana.</p>
+      <div class="field"><label for="ini-sal">Salário (o que cai na conta)</label><input id="ini-sal" class="ini-r" type="text" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"></div>
+      <div class="field"><label for="ini-meta">Guardar por mês</label><input id="ini-meta" class="ini-r" type="text" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"></div>
+      <div class="chips" id="ini-pct" aria-label="Sugestões"><button type="button" data-pct="10">10% do salário</button><button type="button" data-pct="15">15%</button><button type="button" data-pct="20">20%</button></div>
+    </section>
+    <section class="ini-p" data-p="3" hidden>
+      <h3 class="ini-t">Quais contas são fixas?</h3>
+      <p class="sheet-p">Aluguel, academia, streaming, celular… Pode pular e adicionar depois em Ajustes.</p>
+      <div class="ini-fixos" id="ini-fixos"></div>
+      <div class="ini-novo"><input id="ini-fx-nome" type="text" autocomplete="off" placeholder="Nome, ex.: Aluguel" aria-label="Nome da conta fixa"><input id="ini-fx-valor" class="ini-r" type="text" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00" aria-label="Valor da conta fixa"></div>
+      <div class="seg two" id="ini-fx-onde" role="group" aria-label="Onde é cobrada"><div class="thumb"></div><button type="button" data-v="cartao">No crédito</button><button type="button" data-v="debito">No débito</button></div>
+      <button class="ghost" type="button" id="ini-fx-add">Adicionar conta fixa</button>
+    </section>
+    <section class="ini-p" data-p="4" hidden>
+      <h3 class="ini-t">Tem vale-refeição ou mobilidade?</h3>
+      <p class="sheet-p">Eles têm saldo próprio e não saem do seu limite. Deixe em branco se não tiver.</p>
+      <div class="field"><label for="ini-vr">Vale-refeição por mês</label><input id="ini-vr" class="ini-r" type="text" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"></div>
+      <div class="field"><label for="ini-mob">Mobilidade por mês</label><input id="ini-mob" class="ini-r" type="text" inputmode="decimal" autocomplete="off" placeholder="R$ 0,00"></div>
+      <div class="field"><label id="ini-quando-l">Quando começar</label><div class="seg two" id="ini-quando" role="group" aria-labelledby="ini-quando-l"><div class="thumb"></div><button type="button" data-v="agora">Agora</button><button type="button" data-v="prox">No próximo mês</button></div></div>
+      <p class="sheet-p" id="ini-quando-d"></p>
+    </section>
+    <div class="ini-previa" id="ini-previa" aria-live="polite" hidden><span id="ini-prev-l">Você poderá gastar</span><b id="ini-prev-v">R$ 0,00</b><small id="ini-prev-s"></small></div>
+    <div class="row-btns ini-bts"><button class="ghost" type="button" id="ini-volta">Voltar</button><button class="primary" type="button" id="ini-ok">Continuar</button></div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-tg" role="dialog" aria-modal="true" aria-label="Telegram">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Telegram</h3>
+      <div class="rows">
+        <div class="row"><span>Conversar com o Leve<small id="tg-state">Não conectado</small></span><button class="pill-btn" id="tg-btn">Conectar</button></div>
+        <button class="row link-row danger-row" id="tg-del" hidden><span>Desconectar</span></button>
+      </div>
+      <div class="form-card at-box" id="tg-box" hidden></div>
+      <p class="grp-f">Registre saídas por mensagem, áudio ou foto e pergunte quanto ainda dá para gastar. As mensagens passam pelo Telegram e pela IA do Google.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-wa" role="dialog" aria-modal="true" aria-label="WhatsApp">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">WhatsApp</h3>
+      <div class="rows">
+        <div class="row"><span>Conversar com o Leve<small id="wa-state">Não conectado</small></span><button class="pill-btn" id="wa-btn">Conectar</button></div>
+        <button class="row link-row danger-row" id="wa-del" hidden><span>Desconectar</span></button>
+      </div>
+      <div class="form-card at-box" id="wa-box" hidden></div>
+      <p class="grp-f">Registre saídas por mensagem, áudio ou foto e pergunte quanto ainda dá para gastar. As mensagens passam pelo WhatsApp (Meta) e pela IA do Google.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-at" role="dialog" aria-modal="true" aria-label="Atalhos do iPhone">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Atalhos do iPhone</h3>
+      <div class="rows">
+        <div class="row"><span>Chave do atalho<small id="at-state">Nenhuma</small></span><button class="pill-btn" id="at-btn">Criar</button></div>
+        <button class="row link-row danger-row" id="at-del" hidden><span>Desativar chave</span></button>
+      </div>
+      <div class="form-card at-box" id="at-box" hidden></div>
+      <p class="grp-f">Os atalhos "Lançar gasto" e "Conferir caixinha" usam essa chave. Ela só registra saídas e confere o saldo da caixinha; não lê seus dados. Trocar a chave desativa a anterior.</p>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-bk" role="dialog" aria-modal="true" aria-label="Backup">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Backup</h3>
+      <div class="rows">
+        <button class="row link-row" id="bk-out"><span>Baixar backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
+        <label class="row link-row" for="bk-in"><span>Restaurar backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg><input id="bk-in" type="file" accept=".json,application/json" hidden></label>
+      </div>
+      <div class="form-card" id="bk-box" hidden></div>
+  </div>
+</div>
+
+<div class="sheet" id="sheet-voz" role="dialog" aria-modal="true" aria-label="Falar a saída">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Diga o que você gastou</h3>
+    <p class="sheet-p">Toque no microfone do teclado e fale o valor e o que foi. Dá para dizer vários de uma vez e o dia, ex.: "almoço 32 no vale-refeição e uber 18 ontem".</p>
+    <div class="field"><label for="voz-txt" class="sr">O que você gastou</label><textarea id="voz-txt" rows="3" placeholder="almoço 32 no vale-refeição" autocomplete="off"></textarea></div>
+    <button class="primary" id="voz-ok">Entender com IA</button>
+  </div>
+</div>
+<div class="sheet" id="sheet-foto" role="dialog" aria-modal="true" aria-label="Saídas da foto">
+  <div class="sheet-in">
+    <div class="grab"></div>
+    <h3 class="sheet-t">Saídas da foto</h3>
+    <div id="foto-box"></div>
+  </div>
+</div>
+<input id="foto-in" type="file" accept="image/*" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti"></canvas>
+<div class="lock" id="lock" hidden>
+  <div class="lock-in">
+    <div class="marca" aria-hidden="true"><svg class="simbolo" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M34 22C31 40 26 78 48 78C64 78 72 62 73 46" fill="none" stroke="currentColor" stroke-width="17" stroke-linecap="round"/></svg><span>leve</span></div>
+    <h2>App bloqueado</h2>
+    <p id="lock-msg">Use o Face ID para abrir.</p>
+    <button class="primary" id="lock-btn" type="button">Desbloquear com Face ID</button>
+    <button class="linkbtn" id="lock-out" type="button">Sair da conta</button>
+  </div>
+</div>
+<script src="/vendor/supabase-2.117.3.js"></script>
+<script src="/config.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

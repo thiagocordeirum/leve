@@ -1,0 +1,158 @@
+/* =====================================================================
+   Leve — sistema de design ("Seu dinheiro, com mais respiro.")
+   Kit portátil: copie a pasta design/ inteira para o outro projeto e
+   inclua <link rel="stylesheet" href="design/leve.css">.
+   Regras completas em DESIGN.md.
+   ===================================================================== */
+
+/* ---------- fonte (local, sem Google Fonts) ---------- */
+@font-face{font-family:"Inter";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/inter-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/inter-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-weight:600;font-style:normal;font-display:swap;src:url(fonts/inter-latin-600-normal.woff2) format("woff2")}
+
+/* ---------- tokens: tema claro ---------- */
+:root{
+  /* paleta base */
+  --ameixa:#59416D; --lavanda:#EAE2F3; --salvia:#DFEBDD; --pessego:#F8E8DD; --marfim:#F8F7F3; --tinta:#292332;
+
+  /* papéis (use estes nos componentes, não a paleta direto) */
+  --fundo:var(--marfim);          /* fundo da página */
+  --superficie:#FFFFFF;           /* cartões, painéis */
+  --superficie-2:#F2F0EC;         /* trilhos, teclas, campos secundários */
+  --texto:var(--tinta);
+  --suave:#77707F;                /* texto de apoio */
+  --linha:#ECE9E4;                /* contornos e divisórias */
+  --acao:var(--ameixa);           /* botões, aba ativa, barras */
+  --acao-texto:#FFFFFF;           /* texto sobre --acao */
+  --lavanda-texto:#59416D;        /* texto sobre lavanda */
+  --salvia-texto:#3E5F44;         /* texto sobre sálvia */
+  --pessego-texto:#8A4B33;        /* texto sobre pêssego */
+  --positivo:#4F7D56; --alerta:#B4574B; --aviso:#B98545;
+
+  /* categorias (tons de pastel; usados tingidos em quadrados) */
+  --cat-1:#6E5A92; --cat-2:#5C8A5E; --cat-3:#B0647E; --cat-4:#B87952;
+  --cat-5:#5F7CA3; --cat-6:#B58A3E; --cat-7:#4C8A86; --cat-8:#7B7484;
+
+  /* tipografia: 38 display · 28 título · 18 seção · 14/15 corpo · 12 apoio */
+  --fonte:"Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --t-display:38px; --t-titulo:28px; --t-secao:18px; --t-corpo:15px; --t-texto:14px; --t-apoio:12px;
+
+  /* espaço (base 4), cantos e toque */
+  --e-1:4px; --e-2:8px; --e-3:12px; --e-4:16px; --e-5:24px; --e-6:32px;
+  --r-p:12px; --r-m:20px; --r-g:28px; --toque:44px;
+
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+
+/* ---------- tokens: tema escuro ----------
+   Segue o aparelho, a menos que <html data-theme="light|dark"> force um dos dois. */
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --fundo:#17141C; --superficie:#211D28; --superficie-2:#2B2633; --texto:#F2EFF5; --suave:#A39CAE; --linha:#322C3A;
+  --acao:#C3ABDD; --acao-texto:#221C2A;
+  --lavanda:#342A40; --salvia:#26352A; --pessego:#3B2C25;
+  --lavanda-texto:#D9C8EC; --salvia-texto:#B3D3B6; --pessego-texto:#EDB89E;
+  --positivo:#93C59A; --alerta:#E59A8F; --aviso:#E0B878;
+  --cat-1:#B6A3D6; --cat-2:#9CC79D; --cat-3:#E0A0B6; --cat-4:#E3AC88;
+  --cat-5:#9DB4D6; --cat-6:#DDB872; --cat-7:#8CC5C1; --cat-8:#AAA3B4;
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --fundo:#17141C; --superficie:#211D28; --superficie-2:#2B2633; --texto:#F2EFF5; --suave:#A39CAE; --linha:#322C3A;
+  --acao:#C3ABDD; --acao-texto:#221C2A;
+  --lavanda:#342A40; --salvia:#26352A; --pessego:#3B2C25;
+  --lavanda-texto:#D9C8EC; --salvia-texto:#B3D3B6; --pessego-texto:#EDB89E;
+  --positivo:#93C59A; --alerta:#E59A8F; --aviso:#E0B878;
+  --cat-1:#B6A3D6; --cat-2:#9CC79D; --cat-3:#E0A0B6; --cat-4:#E3AC88;
+  --cat-5:#9DB4D6; --cat-6:#DDB872; --cat-7:#8CC5C1; --cat-8:#AAA3B4;
+  color-scheme:dark }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:var(--fonte);font-size:var(--t-corpo);line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--acao);outline-offset:2px}
+.lv-num{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---------- texto ---------- */
+.lv-display{font-weight:500;font-size:var(--t-display);letter-spacing:-.03em;line-height:1.1}
+.lv-titulo{margin:0;font-weight:500;font-size:var(--t-titulo);letter-spacing:-.02em;line-height:1.15}
+.lv-secao{margin:0;font-weight:500;font-size:var(--t-secao);letter-spacing:-.01em}
+.lv-apoio{font-size:var(--t-apoio);color:var(--suave)}
+.lv-rotulo{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--lavanda-texto)}
+.lv-link{color:var(--acao);font-weight:500;font-size:13px}
+
+/* ---------- botões ---------- */
+.lv-btn{min-height:52px;padding:14px 18px;border-radius:14px;background:var(--acao);color:var(--acao-texto);font-weight:500;font-size:var(--t-corpo);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s var(--ease),opacity .2s}
+.lv-btn:active{transform:scale(.98)}
+.lv-btn:disabled{opacity:.4}
+.lv-btn--escuro{background:var(--tinta);color:#fff}
+.lv-btn--sec{background:var(--superficie);color:var(--texto);box-shadow:0 0 0 1px var(--linha)}
+.lv-btn--sec svg{color:var(--acao)}
+.lv-btn--neutro{background:var(--superficie-2);color:var(--suave)}
+.lv-btn--icone{width:52px;padding:0}
+.lv-btn svg{width:20px;height:20px}
+.lv-btn-redondo{width:40px;height:40px;border-radius:50%;background:var(--acao);color:var(--acao-texto);display:grid;place-items:center}
+
+/* ---------- chips ---------- */
+.lv-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:99px;font-size:13px;font-weight:500;background:var(--superficie-2);color:var(--suave)}
+.lv-chip--lavanda{background:var(--lavanda);color:var(--lavanda-texto)}
+.lv-chip--salvia{background:var(--salvia);color:var(--salvia-texto)}
+.lv-chip--pessego{background:var(--pessego);color:var(--pessego-texto)}
+
+/* ---------- cartões ---------- */
+.lv-card{background:var(--superficie);border-radius:var(--r-m);padding:var(--e-4);box-shadow:0 0 0 1px var(--linha)}
+.lv-card--lavanda{background:var(--lavanda);box-shadow:none;color:var(--texto)}
+.lv-card--salvia{background:var(--salvia);box-shadow:none;color:var(--salvia-texto)}
+.lv-card--pessego{background:var(--pessego);box-shadow:none;color:var(--pessego-texto)}
+.lv-card--destaque{border-radius:var(--r-g);padding:18px 18px 20px}
+
+/* ---------- barras (sempre com valor e meta escritos ao lado) ---------- */
+.lv-barra{display:block;height:6px;border-radius:99px;background:var(--superficie-2);overflow:hidden}
+.lv-barra>b{display:block;height:100%;border-radius:99px;background:var(--acao);transition:width 1s var(--ease)}
+.lv-pilha{display:flex;gap:2px;height:8px;border-radius:99px;background:var(--superficie-2);overflow:hidden}
+.lv-pilha>b{display:block;height:100%}
+
+/* ---------- ícone tingido (quadrado pastel com ícone na cor) ---------- */
+.lv-ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;--c:var(--suave);background:color-mix(in srgb,var(--c) 15%,transparent);color:var(--c);flex:0 0 auto}
+.lv-ico svg{width:20px;height:20px}
+
+/* ---------- listas ---------- */
+.lv-lista{background:var(--superficie);border-radius:var(--r-m);box-shadow:0 0 0 1px var(--linha);padding:4px}
+.lv-item{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;position:relative;width:100%;text-align:left}
+.lv-item+.lv-item::before{content:"";position:absolute;left:64px;right:12px;top:0;border-top:1px solid var(--linha)}
+.lv-item b{font-weight:500}
+.lv-item small{display:block;font-size:var(--t-apoio);color:var(--suave)}
+
+/* ---------- controle segmentado ---------- */
+.lv-seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--superficie-2);border-radius:99px;padding:4px;gap:2px}
+.lv-seg button{padding:7px 14px;border-radius:99px;font-size:12px;font-weight:500;color:var(--suave)}
+.lv-seg button[aria-pressed="true"]{background:var(--lavanda);color:var(--lavanda-texto)}
+
+/* ---------- campos ---------- */
+.lv-campo{display:flex;flex-direction:column;gap:6px}
+.lv-campo label{font-size:12px;font-weight:500;color:var(--suave)}
+.lv-campo input,.lv-campo select{min-height:48px;padding:12px;border-radius:12px;border:1px solid var(--linha);background:var(--superficie);color:var(--texto);font:inherit;font-size:16px}
+
+/* ---------- barra de abas (até 4 itens) ---------- */
+.lv-abas{position:fixed;left:0;right:0;bottom:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px;padding:8px 16px calc(8px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--superficie) 92%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 -1px 0 var(--linha)}
+.lv-aba{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:52px;padding:8px 0;border-radius:16px;font-size:12px;font-weight:500;color:var(--suave)}
+.lv-aba svg{width:22px;height:22px}
+.lv-aba[aria-current="page"]{background:var(--lavanda);color:var(--lavanda-texto)}
+
+/* ---------- barra de abas flutuante (pílula + botão redondo no meio) ----------
+   4 abas (2 de cada lado) + 1 ação principal. Ver "Barra de abas flutuante" no DESIGN.md.
+   Reserve espaço no fim do conteúdo: padding-bottom: calc(var(--abas-h) + env(safe-area-inset-bottom) + 32px). */
+:root{--abas-h:78px} /* pílula (68) + distância do rodapé (10), sem a área segura */
+.lv-flutuante{position:fixed;left:0;right:0;bottom:0;z-index:30;pointer-events:none;padding:0 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.lv-pilula{max-width:480px;margin:0 auto;pointer-events:auto;display:grid;grid-template-columns:1fr 1fr 72px 1fr 1fr;align-items:center;gap:2px;padding:8px;border-radius:24px;background:var(--superficie);box-shadow:0 0 0 1px var(--linha),0 8px 24px rgb(23 20 28 / .12)}
+.lv-pilula>a,.lv-pilula>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:52px;border-radius:16px;font-size:11px;font-weight:500;color:var(--suave);text-decoration:none;transition:background .2s var(--ease),color .2s var(--ease)}
+.lv-pilula .i{width:22px;height:22px}
+.lv-pilula>[aria-current="page"],.lv-pilula>.on{background:var(--lavanda);color:var(--lavanda-texto)}
+.lv-pilula>.lv-fab{justify-self:center;width:58px;height:58px;min-height:0;margin-top:-30px;border-radius:50%;display:grid;place-items:center;background:var(--acao);color:var(--acao-texto);box-shadow:0 0 0 5px var(--fundo);transition:transform .15s var(--ease)}
+.lv-pilula>.lv-fab:active{transform:scale(.94)}
+.lv-pilula>.lv-fab .i{width:26px;height:26px}
+
+/* ---------- painel que sobe de baixo ---------- */
+.lv-painel{position:fixed;left:0;right:0;bottom:0;max-height:calc(100dvh - 30px);overflow-y:auto;background:var(--superficie);border-radius:28px 28px 0 0;padding:10px 16px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px}
+.lv-painel::before{content:"";width:40px;height:5px;border-radius:9px;background:var(--linha);margin:0 auto}

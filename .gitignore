@@ -1,0 +1,11 @@
+# Backups têm seus dados financeiros: nunca suba para o GitHub
+sobra-backup-*.json
+leve-backup-*.json
+*.backup.json
+
+.vercel
+.DS_Store
+node_modules
+
+# Arquivos temporários da CLI do Supabase
+supabase/.temp/
